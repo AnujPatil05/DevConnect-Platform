@@ -5,8 +5,9 @@ import com.devconnect.backend.dto.UserRegistrationDto;
 import com.devconnect.backend.entity.User;
 import com.devconnect.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus; // Import this
-import org.springframework.http.ResponseEntity; // Import this
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.devconnect.backend.dto.LoginRequestDto;
 import com.devconnect.backend.dto.UserDto;
@@ -39,10 +40,15 @@ public class UserController {
         return  ResponseEntity.ok(new LoginResponseDto(token));
     }
 
-    // ADD THIS NEW METHOD
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
         // Return a 400 Bad Request status with the exception message in the body
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+    }
+
 }
