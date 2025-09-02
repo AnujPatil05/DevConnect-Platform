@@ -1,11 +1,18 @@
+// Inside App.jsx
+
 import React from 'react';
-import RegistrationForm from './components/RegistrationForm.jsx'; // <-- Import it
+import LoginForm from './components/LoginForm.jsx'; // <-- New import
 
 function App() {
+  const handleLogin = (token) => {
+    // We will save the token here in the next step
+    console.log("JWT received:", token);
+  };
+
   return (
     <div>
       <h1>DevConnect Platform</h1>
-      <RegistrationForm /> {/* <-- Use it here */}
+      <LoginForm onLoginSuccess={handleLogin} /> {/* <-- New component */}
     </div>
   );
 }
